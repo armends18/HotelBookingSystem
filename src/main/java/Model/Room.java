@@ -49,13 +49,13 @@ public class Room implements Serializable {
 
         }
         for (int i=1;i<(bookedDates.size()-1);i=i+2 ) {
-            if (bookedDates.get(i).isBefore(date1) && bookedDates.get(i+1).isAfter(date2)) {
+            if ((bookedDates.get(i).isBefore(date1)|| bookedDates.get(i).isEqual(date1)) && bookedDates.get(i+1).isAfter(date2)) {
                     return true;
 
             }
 
         }
-        if (bookedDates.get(bookedDates.size()-1).isBefore(date1)) {
+        if (bookedDates.get(bookedDates.size()-1).isBefore(date1)|| bookedDates.get(bookedDates.size()-1).isEqual(date1)) {
             return true;
         }
 
@@ -71,7 +71,7 @@ public class Room implements Serializable {
         return s;
     }
     public void setBookedDates(LocalDate date1,LocalDate date2) {
-       if (bookedDates.size()==0) {
+       if (bookedDates.isEmpty()) {
         this.bookedDates.add(date1);
         this.bookedDates.add(date2);
        }
@@ -86,5 +86,9 @@ public class Room implements Serializable {
         this.bookedDates.remove(Date1);
         this.bookedDates.remove(Date2);
 
+    }
+    @Override
+    public String toString() {
+        return "Room{" + "roomNumber=" + roomNumber + ", type=" + type +", price=" + price + ", bookedDates=" + bookedDates + '}';
     }
 }
