@@ -16,21 +16,8 @@ public class Main2 {
         seedData();
         RoomsDao dao = new RoomsDao();
         GuestDao gDao = new GuestDao();
-        dao.getAll().get(0).setBookedDates(LocalDate.now(),LocalDate.now().plusDays(3));
 
 
-         Guest g=new Guest("Rober", "3556789", "Roberto@gmail.com",LocalDate.of(2025,2,9),LocalDate.of(2025,2,10));
-        gDao.createGuest(g);
-        System.out.println(dao.getAll().get(0).toString());
-        Booking b= new Booking(dao.getAll().get(0),gDao.getAll().get(0));
-        for (int i=0;i<dao.getAll().size();i++) {
-            System.out.println(dao.getAll().get(i).bookedDatesPrint());
-
-
-
-        }
-        b.generateFirstInvoice();
-        b.cancelBooking();
 
     }
     private static void seedData() {
