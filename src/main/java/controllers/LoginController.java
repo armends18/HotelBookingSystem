@@ -70,18 +70,18 @@ public class LoginController {
         try {
             emp = employeeDAO.authLogin(username, password);
             System.out.println("Login Successful");
-            //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+            Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
             Stage oldStage = (Stage) loginPage.getScene().getWindow();
             oldStage.close();
-           // Stage primaryStage = new Stage();
-           // primaryStage.setScene(homeScene);
-//            primaryStage.setTitle("3A Hotel");
-//            primaryStage.setX(VISUAL_BOUNDS.getMinX());
-//            primaryStage.setY(VISUAL_BOUNDS.getMinY());
-//            primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
-//            primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
-//            primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
-//            primaryStage.show();
+            Stage primaryStage = new Stage();
+            primaryStage.setScene(homeScene);
+            primaryStage.setTitle("3A Hotel");
+            primaryStage.setX(VISUAL_BOUNDS.getMinX());
+            primaryStage.setY(VISUAL_BOUNDS.getMinY());
+            primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
+            primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
+            primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
+            primaryStage.show();
 
 //           if(emp instanceof Manager) {
 //                new ManagerController(emp);

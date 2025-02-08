@@ -3,6 +3,7 @@ package Model;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public class Booking implements Serializable {
@@ -13,11 +14,22 @@ public class Booking implements Serializable {
     private double invoicePrice;
     private String invoiceId;
     private double refundPrice;
+    private int numberOfNights=0;
+    private int roomNumber;
+    private String guestName;
+    private LocalDate startingDate;
+    private LocalDate endDate;
+
     public Booking(Room room, Guest guest) {
         this.room = room;
         this.guest = guest;
         this.room.setBookedDates(guest.getDate1(),guest.getDate2());
         this.invoiceId=LocalDate.now().toString();
+        this.numberOfNights= (int) ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2());
+        this.startingDate=guest.getDate1();
+        this.endDate=guest.getDate2();
+        this.guestName=guest.getName();
+        this.roomNumber= room.getRoomNumber();
     }
 
     public Room getRoom() {
@@ -92,42 +104,24 @@ public class Booking implements Serializable {
         }
     }
     public void endBooking() {
-generateFinalInvoice();
-room.removeBookedDates(guest.getDate1(),guest.getDate2());
+        generateFinalInvoice();
+        room.removeBookedDates(guest.getDate1(),guest.getDate2());
     }
-
-    public static class Employee {
-        private String name;
-        private String username;
-        private String password;
-        public Employee(String name, String username, String password) {
-            this.name = name;
-            this.username = username;
-            this.password = password;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
+    public int getNumberOfNights() {
+        return numberOfNights;}
+    public void setNrOfNights(int numberOfNights) {
+        this.numberOfNights = numberOfNights;
+    }
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+    public String getGuestName() {
+        return guestName;
+    }
+    public LocalDate getStartingDate() {
+        return startingDate;
+    }
+    public LocalDate getEndDate() {
+        return endDate;
     }
 }

@@ -1,6 +1,12 @@
 package Model;
 
-public class Employee {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Employee implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -2084960902014783374L;
     private String name;
     private String username;
     private String password;

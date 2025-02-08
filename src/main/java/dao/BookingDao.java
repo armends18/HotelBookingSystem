@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.List;
 
 public class BookingDao {
-    public static final String FILE_PATH = "src/main/java/DAO/booking.dat";
+    public static final String FILE_PATH = "src/main/java/dao/booking.dat";
     private static final File DATA_FILE = new File(FILE_PATH);
     private final ObservableList<Booking> bookings = FXCollections.observableArrayList();
     public ObservableList<Booking> getAll() {
@@ -80,6 +80,7 @@ public class BookingDao {
             for (Booking b: bookingsToRemove) {
                 if (!bookingsToRemove.contains(b)) {
                     writer.writeObject(b);
+                    bookings.remove(b);
                 }
             }
             return true;
