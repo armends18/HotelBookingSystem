@@ -11,9 +11,35 @@ public class Guest implements Serializable {
     private String name;
     private BigInteger phoneNumber;
     private String email;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    private String username;
+    private String password;
     private LocalDate date1;
     private LocalDate date2;
+    public Guest(String name,BigInteger phoneNumber,String email) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.date1 = null;
+        this.date2 = null;
 
+    }
     public Guest(String name, String phoneNumber,String email, LocalDate date1, LocalDate date2) {
         this.name = name;
         this.email = email;

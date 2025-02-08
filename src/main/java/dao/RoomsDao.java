@@ -40,7 +40,7 @@ public class RoomsDao {
         }
     }
 
-    public boolean create(Room rooms) {
+    public boolean create(Room room) {
         try(FileOutputStream outputStream = new FileOutputStream(DATA_FILE, true)) {
             ObjectOutputStream writer;
             if(DATA_FILE.length()>0){
@@ -49,8 +49,8 @@ public class RoomsDao {
             else{
                 writer = new ObjectOutputStream(outputStream);
             }
-            writer.writeObject(rooms);
-            this.rooms.add(rooms);
+            writer.writeObject(room);
+            this.rooms.add(room);
             return true;
         } catch(IOException ex) {
             return false;
