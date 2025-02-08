@@ -7,26 +7,18 @@ import View.*;
 import dao.BookingDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 public class HomePageController {
     private Employee employee;
-    private HomePage homePage;
+    private GuestPage homePage;
     private BookingDao bookingDao=new BookingDao();
 
 
     HomePageController(Employee employee) {
         this.employee = employee;
-        this.homePage = new HomePage(employee);
+        this.homePage = new GuestPage(employee);
         setEditListeners();
         this.homePage.getTableView().setItems(bookingDao.getAll());
         this.homePage.getDeleteBookingBt().setOnAction(e->onBookingDelete(e));
@@ -107,7 +99,7 @@ public class HomePageController {
 //            System.out.println("country creation failed");
 //        }
 
-    public HomePage getHomePage() {
+    public GuestPage getHomePage() {
         return homePage;
     }
 }

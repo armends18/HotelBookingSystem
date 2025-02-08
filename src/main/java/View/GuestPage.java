@@ -7,17 +7,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import dao.BookingDao;
+
 import javafx.util.converter.IntegerStringConverter;
 
-public class HomePage extends BorderPane {
+public class GuestPage extends BorderPane {
     // Shared root layout
     private MenuBar menuBar;       // Shared MenuBar
     private Employee employee;
@@ -31,15 +29,15 @@ public class HomePage extends BorderPane {
     private final TableColumn<Booking,Integer> numberOfNights;
     private final TableColumn<Booking, LocalDate> startingDate;
     private final TableColumn<Booking,LocalDate> endDate ;
-    private final Button deleteBookingBt=new Button("Delete Booking");
-    private final Button endBookingBt=new Button("End Booking");
-    private final Button generateFinalInvoice=new Button("Generate final Invoice for client");
-    private final Button addBookingBt=new Button("Go to New Booking Menu");
-    private final Button showRoomsBt=new Button("Show Available Rooms");
+//    private final Button deleteBookingBt=new Button("Delete Booking");
+//    private final Button endBookingBt=new Button("End Booking");
+//    private final Button generateFinalInvoice=new Button("Generate final Invoice for client");
+//    private final Button addBookingBt=new Button("Go to New Booking Menu");
+//    private final Button showRoomsBt=new Button("Show Available Rooms");
 
 
 
-    public HomePage(Employee employee) {
+    public GuestPage(Employee employee) {
 
 
         menuBar = new MenuBar();
@@ -100,7 +98,7 @@ public class HomePage extends BorderPane {
         scrollPane.setPrefSize(250,300);
 
         VBox tableContainer = new VBox();
-                tableContainer.setSpacing(10);
+        tableContainer.setSpacing(10);
         tableContainer.getChildren().addAll(titleLabel,scrollPane,buttonContainer);
         tableContainer.setAlignment(Pos.CENTER);
         tableContainer.setPadding(new Insets(20,20,20,20));
@@ -129,7 +127,6 @@ public class HomePage extends BorderPane {
     public MenuItem getLogoutItem() {
         return logoutItem;
     }
-
 
     public TableColumn<Booking,Integer> getRoomNumber() {
         return roomNumber;

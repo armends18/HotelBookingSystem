@@ -80,9 +80,11 @@ public class BookingDao {
             for (Booking b: bookingsToRemove) {
                 if (!bookingsToRemove.contains(b)) {
                     writer.writeObject(b);
-                    bookings.remove(b);
+
                 }
+                bookings.remove(b);
             }
+
             return true;
         }
         catch (IOException ex) {
