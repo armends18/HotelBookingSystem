@@ -33,27 +33,29 @@ public class GuestController {
     }
     public void cancelBooking(){
        int i=guestPage.getIndex();
+
        Booking booking=bookingDao.getAll().get(i);
        if(guestDao.deleteGuest(bookingDao.getAll().get(i).getGuest()))
             System.out.println("complete");
        if(bookingDao.deleteBooking(booking))
-           System.out.println("done");
+           System.out.println("done"+booking.getInvoicePrice());
 
-       guestPage.getEndBookingBtn().setDisable(true);
-       booking.cancelBooking();
-       guestPage.getInvoiceArea().setText(booking.generateCancellationInvoice());
+        booking.cancelBooking();
+        guestPage.getEndBookingBtn().setDisable(true);
+        guestPage.getInvoiceArea().setText(booking.generateCancellationInvoice());
     }
     public void endBooking(){
         int i=guestPage.getIndex();
         Booking booking=bookingDao.getAll().get(i);
-        if(guestDao.deleteGuest(bookingDao.getAll().get(i).getGuest()))
+        if(guestDao.deleteGuest(bookingDao.getAll().get(i).getGuest())) {
             System.out.println("complete");
+        }
         if(bookingDao.deleteBooking(booking))
             System.out.println("done");
 
         guestPage.getCancelBookingBtn().setDisable(true);
         booking.endBooking();
-        guestPage.getInvoiceArea().setText(booking.generateCancellationInvoice());
+        guestPage.getInvoiceArea().setText(booking.generateFinalInvoice());
     }
     private void logout() {
         Stage oldStage = (Stage) guestPage.getScene().getWindow();

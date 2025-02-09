@@ -5,25 +5,32 @@ import com.hotel.Main2;
 import Model.Employee;
 import View.*;
 import dao.BookingDao;
+import dao.GuestDao;
+import dao.RoomsDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
 
 public class HomePageController {
     private Employee employee;
     private HomePage homePage;
     private BookingDao bookingDao=new BookingDao();
-
-
+    private RoomsDao roomsDao=new RoomsDao();
+    private GuestDao guestDao=new GuestDao();
+    
     HomePageController(Employee employee) {
         this.employee = employee;
         this.homePage = new HomePage(employee);
         setEditListeners();
         this.homePage.getTableView().setItems(bookingDao.getAll());
+        this.homePage.getTableview2().setItems(roomsDao.getAll());
         this.homePage.getDeleteBookingBt().setOnAction(e->onBookingDelete(e));
         homePage.getLogoutItem().setOnAction(e -> logout());
-
+        homePage.getEndBookingBt().setOnAction(e->onBookingEnd(e));
+        homePage.getShowRoomsBt().setOnAction(e->onShowRooms(e));
+        homePage.getHideRoomsBt().setOnAction(e->onHideRooms(e));
 
     }
 
@@ -68,6 +75,43 @@ public class HomePageController {
         }
         alert.setTitle("Delete result");
         alert.show();
+    }
+    private void onBookingEnd(ActionEvent event){
+        ObservableList<Booking> selectedBookings = this.homePage.getTableView().getSelectionModel().getSelectedItems();
+       Booking selectedBooking=selectedBookings.get(0);
+        Alert alert;
+        if(guestDao.deleteGuest(selectedBooking.getGuest())) {
+
+            System.out.println("complete");
+        }
+        if(bookingDao.deleteBooking(selectedBooking)){
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Ended Booking successfully");
+            System.out.println("done");}
+        else {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Deletion failed");
+        }
+        selectedBooking.endBooking();
+        homePage.getTableview2().setVisible(false);
+        homePage.getInvoiceArea().setVisible(true);
+        homePage.getInvoiceArea().setText(selectedBooking.generateFinalInvoice());;
+
+        alert.setTitle("Delete result");
+        alert.show();
+
+    }
+    public void onHideRooms(ActionEvent e){
+        homePage.getTableview2().setVisible(false);
+        homePage.getHideRoomsBt().setVisible(false);
+    }
+    public void onShowRooms(ActionEvent e){
+        homePage.getInvoiceArea().setVisible(false);
+        homePage.getTableview2().setVisible(true);
+        homePage.getHideRoomsBt().setVisible(true);
+
+
+
     }
 
     public HomePage getHomePage() {

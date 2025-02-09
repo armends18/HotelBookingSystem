@@ -75,7 +75,7 @@ public class Booking implements Serializable {
 
     public void cancelBooking(){
         LocalDate today = LocalDate.now();
-
+        invoicePrice = room.getPrice()* ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2())*1.2;
         if(guest.getDate1().isAfter(today)){
             if(ChronoUnit.DAYS.between(today,guest.getDate1())>=3){
 
@@ -94,7 +94,7 @@ public class Booking implements Serializable {
                 this.refundPrice= 0;
 
             }
-
+            System.out.println("canceled");
         }
     }
     public void endBooking() {
