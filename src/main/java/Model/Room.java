@@ -68,47 +68,48 @@ public class Room implements Serializable {
     }
 
     public boolean isAvailable(LocalDate date1, LocalDate date2) {
-        if (bookedDates.get(0).isAfter(date2)&& date2.isAfter(date1)) {
-            return true;
-
+        if (bookedDates.isEmpty()) {
+            return true; // No bookings, room is available
         }
-        for (int i=1;i<(bookedDates.size()-1);i=i+2 ) {
-            if ((bookedDates.get(i).isBefore(date1)|| bookedDates.get(i).isEqual(date1)) && bookedDates.get(i+1).isAfter(date2)) {
-                    return true;
 
+        for (int i = 0; i < bookedDates.size(); i += 2) { // Loop through booked date pairs
+            LocalDate bookedStart = bookedDates.get(i);
+            LocalDate bookedEnd = bookedDates.get(i + 1);
+
+            if (!((date2.isBefore(bookedStart)||date2.isEqual(bookedStart)) || (date1.isAfter(bookedEnd)||date1.isEqual(bookedEnd)))) {
+                return false; // Overlap found, room is not available
             }
-
         }
-        if (bookedDates.get(bookedDates.size()-1).isBefore(date1)|| bookedDates.get(bookedDates.size()-1).isEqual(date1)) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
+
     public String bookedDatesPrint(){
         String s="";
         for (int i=0;i<bookedDates.size();i++) {
+
             s=s+bookedDates.get(i)+" ";
-            if(i%2!=0)s=s+"\n";
+            if(i%2!=1)s=s+"- ";
         }
 
         return s;
     }
-    public void setBookedDates(LocalDate date1,LocalDate date2) {
-       if (bookedDates.isEmpty()) {
-        this.bookedDates.add(date1);
-        this.bookedDates.add(date2);
-       }
-       else if(isAvailable(date1,date2)) {
-               this.bookedDates.add(date1);
-               this.bookedDates.add(date2);
-           }
-       else
-           System.out.println("ERROR: Booked date is not available");
+    public void setBookedDates(LocalDate date1, LocalDate date2) {
+        if (!isAvailable(date1, date2)) {
+            System.out.println("ERROR: Date is already booked.");
+            return;
+        }
+
+        bookedDates.add(date1);
+        bookedDates.add(date2);
+        bookedDates.sort(LocalDate::compareTo);
     }
+
     public void removeBookedDates(LocalDate Date1,LocalDate Date2){
         this.bookedDates.remove(Date1);
         this.bookedDates.remove(Date2);
+
+    }
+    public void orderList(){
 
     }
     @Override

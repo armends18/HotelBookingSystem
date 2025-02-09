@@ -64,15 +64,18 @@ public class GuestDao {
 
     public boolean deleteGuest(Guest guest) {
         try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+
             for (Guest g:guests) {
-                if(!g.equals(guest)) {
+                if (g == null || g.getUsername() == null) {
+                    continue;
+                }
+                if(!g.getUsername().equals(guest.getUsername())) {
                     outputStream.writeObject(g);
                 }
             }
 
             guests.remove(guest);
-
-            return true;
+            return  true;
         } catch (IOException ex) {
             return false;
         }
@@ -81,6 +84,7 @@ public class GuestDao {
     public boolean deleteAll(List<Guest> guestsToRemove) {
 
         try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+
             for (Guest g: guests) {
                 if (!guestsToRemove.contains(g)) {
                     writer.writeObject(g);
@@ -105,7 +109,9 @@ public class GuestDao {
         }
     }
     public Guest authLogin(String username, String password) throws WrongPassword, WrongUsername {
+
         for(Guest g : guests) {
+            if (g == null || g.getUsername() == null) continue;
             if(g.getUsername().equals(username)) {
                 if(g.getPassword().equals(password)) {
                     return g;

@@ -1,9 +1,7 @@
 package controllers;
 
-import Model.Booking;
-import Model.Guest;
+import Model.*;
 import com.hotel.Main2;
-import Model.Employee;
 import View.*;
 import dao.BookingDao;
 import dao.GuestDao;
@@ -18,6 +16,8 @@ public class NewGuestController {
     private NewGuestPage newGuestPage;
     private GuestDao guestDao=new GuestDao();
     private RoomsDao roomsDao=new RoomsDao();
+    private BookingDao bookingDao=new BookingDao();
+    private Guest guest;
 
 
     NewGuestController(Guest guest) {
@@ -26,8 +26,9 @@ public class NewGuestController {
         setEditListeners();
         this.newGuestPage.getTableView().setItems(roomsDao.getAll());
         newGuestPage.getLogoutItem().setOnAction(e -> logout());
-
-
+        newGuestPage.getShowRoomsBt().setOnAction(e-> showRoomsAfterFilter());
+        newGuestPage.getBookingBt().setOnAction(e->declareBooking());
+        this.guest=guest;
     }
     private void setEditListeners() {
         this.newGuestPage.getRoomNumberC().setOnEditCommit(e -> {
@@ -50,7 +51,70 @@ public class NewGuestController {
         main.start(stage);
 
     }
+    private void loadSingleRooms() {
+        RoomsDao roomsDao = new RoomsDao(); // Assuming this class fetches all rooms
+        newGuestPage.getTableView().getItems().clear(); // Clear previous data
 
+        for (Room room : roomsDao.getAll()) {
+            if ((room.getType() == RoomType.SINGLE) && (room.isAvailable(newGuestPage.getDateFrom().getValue(),newGuestPage.getDateTo().getValue()))) { // Filter only SINGLE rooms
+               newGuestPage.getTableView().getItems().add(room);
+            }
+        }
+    }
+    private void loadDoubleRooms() {
+        RoomsDao roomsDao = new RoomsDao(); // Assuming this class fetches all rooms
+        newGuestPage.getTableView().getItems().clear(); // Clear previous data
+
+        for (Room room : roomsDao.getAll()) {
+            if ((room.getType() == RoomType.DOUBLE) && (room.isAvailable(newGuestPage.getDateFrom().getValue(),newGuestPage.getDateTo().getValue()))) { // Filter only SINGLE rooms
+                newGuestPage.getTableView().getItems().add(room);
+            }
+        }
+    }
+    private void loadTwinRooms(){
+        RoomsDao roomsDao = new RoomsDao(); // Assuming this class fetches all rooms
+        newGuestPage.getTableView().getItems().clear(); // Clear previous data
+
+        for (Room room : roomsDao.getAll()) {
+            if ((room.getType() == RoomType.TWIN) && (room.isAvailable(newGuestPage.getDateFrom().getValue(),newGuestPage.getDateTo().getValue()))) { // Filter only SINGLE rooms
+                newGuestPage.getTableView().getItems().add(room);
+            }
+        }
+    }
+    private void showRoomsAfterFilter(){
+        if(newGuestPage.getDateTo()!=null && newGuestPage.getDateFrom()!=null){
+        if(newGuestPage.getSingleBt().isSelected()){
+            loadSingleRooms();
+
+        }
+        else if(newGuestPage.getDoubleBt().isSelected()){
+            loadDoubleRooms();
+        }
+        else if(newGuestPage.getTwinBt().isSelected()){
+            loadTwinRooms();
+        }
+        else{
+            newGuestPage.getErrorLabel().setText("Enter what Type of room you want");
+        }
+        }
+        else newGuestPage.getErrorLabel().setText("Enter the dates of the rooms you want");
+    }
+    public void declareBooking(){
+
+
+        Room selectedRoom = (Room) newGuestPage.getTableView().getSelectionModel().getSelectedItem();
+        if(selectedRoom==null){
+            newGuestPage.getErrorLabel().setText("Please select a room first and enter the details");
+        }
+        else{
+            guest.setDate1(newGuestPage.getDateFrom().getValue());
+            guest.setDate2(newGuestPage.getDateTo().getValue());
+            if(guestDao.createGuest(guest)){
+                System.out.println("yes");
+            }
+        bookingDao.createBooking(new Booking(selectedRoom,guest));
+        logout();}
+    }
 
 
     public NewGuestPage getGuestPage() {

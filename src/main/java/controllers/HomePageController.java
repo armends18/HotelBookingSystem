@@ -53,14 +53,6 @@ public class HomePageController {
         this.homePage.getEndDate().setOnEditCommit(e -> {
             bookingDao.getAll().get(e.getTablePosition().getRow()).getGuest().setDate2(e.getNewValue());
         });
-//        this.homePage.getBtnUpdate().setOnAction(e -> {
-//            if(this.bookingDao.updateAll()) {
-//                System.out.println("content updated");
-//                this.homePage.getTableView().setItems(bookingDao.getAll());  // Refresh the TableView
-//            } else {
-//                System.out.println("update failed");
-//            }
-//        });
     }
 
     private void onBookingDelete(ActionEvent event) {
@@ -77,27 +69,6 @@ public class HomePageController {
         alert.setTitle("Delete result");
         alert.show();
     }
-
-//    private void onBookAdd() {
-//        String countryName = this.view.getTfCountry().getText();
-//        String capital =this.view.getTfCapital().getText();
-//        double population =Double.parseDouble(this.view.getTfPopulation().getText());
-//        boolean isDemocratic = this.view.getChkIsDemocratic().isSelected();
-//        Country country = new Country(countryName, capital, population, isDemocratic);
-//        if(countryDAO.create(country)) {
-//            System.out.println("Saved successfully");
-//            this.view.getTfCountry().clear();
-//            this.view.getTfCapital().clear();
-//            this.view.getTfPopulation().clear();
-//            this.view.getChkIsDemocratic().setSelected(false);
-//            this.view.getTableView().refresh();
-//
-//
-//
-//
-//        } else {
-//            System.out.println("country creation failed");
-//        }
 
     public HomePage getHomePage() {
         return homePage;

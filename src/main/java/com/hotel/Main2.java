@@ -26,10 +26,15 @@ import static javafx.application.Application.launch;
         public static final Rectangle2D VISUAL_BOUNDS = screen.getVisualBounds();
 
         public static void main(String[] args) {
+
             seedData();
             seedGuestData();
             seedBookingData();
             seedEmployeeData();
+            RoomsDao r=new RoomsDao();
+            System.out.println(r.getAll().get(0).bookedDatesPrint());
+            System.out.println(r.getAll().get(1).bookedDatesPrint());
+            System.out.println(r.getAll().get(2).bookedDatesPrint());
 
 
             launch(args);
@@ -90,7 +95,8 @@ import static javafx.application.Application.launch;
             File file = new File(GuestDao.FILE_PATH);
             if (file.length() == 0) {
                 Guest[] guests = {
-                        new Guest("Robert","0688899033","robert@gmail.com",LocalDate.of(2025,2,22),LocalDate.of(2025,2,25))
+                        new Guest("Robert Stinson","0688899033","robert@gmail.com",LocalDate.of(2025,2,22),LocalDate.of(2025,2,25)),
+                        new Guest("Camilla Lau","0697877654","clau@gmail.com,",LocalDate.of(2025,2,15),LocalDate.of(2025,2,17))
                 };
                 try (ObjectOutputStream outputStream=new ObjectOutputStream(new FileOutputStream(file))){
                     for (Guest g : guests) {
@@ -108,9 +114,10 @@ import static javafx.application.Application.launch;
             RoomsDao roomsDao = new RoomsDao();
             EmployeeDao employeeDao = new EmployeeDao();
             if (file.length() == 0) {
-                Booking booking1 = new Booking(roomsDao.getAll().get(0),guestDao.getAll().get(0));try(ObjectOutputStream  outputStream=new ObjectOutputStream(new FileOutputStream(file))){
+                Booking booking1 = new Booking(roomsDao.getAll().get(0),guestDao.getAll().get(0));
+                try(ObjectOutputStream  outputStream=new ObjectOutputStream(new FileOutputStream(file))){
                     outputStream.writeObject(booking1);
-
+                    roomsDao.setBookedDates(0,guestDao.getAll().get(0).getDate1(),guestDao.getAll().get(0).getDate2());
                 } catch (IOException e) {
                 }
             }

@@ -103,5 +103,8 @@ public class BookingDao {
             return false;
         }
     }
+    public int getSize(){
+        return bookings.size();
+    }
 
 }

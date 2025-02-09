@@ -16,6 +16,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import java.math.BigInteger;
+
 import static com.hotel.Main2.VISUAL_BOUNDS;
 
 public class RegisterController {
@@ -69,6 +71,14 @@ public class RegisterController {
         String name=registerPage.getNameField().getText();
         String email=registerPage.getEmailField().getText();
         String phone=registerPage.getPhoneField().getText();
+        try {
+            new BigInteger(phone);
+        }
+        catch (Exception e){
+            registerPage.getErrorLabel().setVisible(true);
+            registerPage.getErrorLabel().setText("Phone number should be a number");
+        }
+
         String username = registerPage.getUsernameField().getText();
         String password = registerPage.getPasswordField().getText();
         Guest gue=new Guest(name,phone,email,username,password);
@@ -91,7 +101,8 @@ public class RegisterController {
 
         }
          catch (AlreadyExists e) {
-            throw new RuntimeException(e);
+             registerPage.getErrorLabel().setVisible(true);
+             registerPage.getErrorLabel().setText(e.getMessage());
         }
     }
 }

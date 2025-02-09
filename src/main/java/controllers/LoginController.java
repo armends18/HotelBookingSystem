@@ -1,5 +1,6 @@
 package controllers;
 
+import Model.Guest;
 import View.RegisterPage;
 import dao.EmployeeDao;
 import Model.Exceptions.WrongPassword;
@@ -30,6 +31,7 @@ public class LoginController {
     public LoginController() {
         loginPage = new LoginPage();
         employeeDAO = new EmployeeDao();
+        guestDAO=new GuestDao();
         loginPage.getPasswordField().setOnKeyPressed(e->onLoginEnter(e));
         loginPage.getUsernameField().setOnKeyPressed(e->onLoginEnter(e));
         loginPage.getUnmaskedPasswordField().setOnKeyPressed(e->onLoginEnter(e));
@@ -66,6 +68,7 @@ public class LoginController {
         String username = loginPage.getUsernameField().getText();
         String password = loginPage.getPasswordField().getText();
         Employee emp;
+        Guest guest;
 
         try {
             emp = employeeDAO.authLogin(username, password);
@@ -83,15 +86,30 @@ public class LoginController {
             primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
             primaryStage.show();
 
-//           if(emp instanceof Manager) {
-//                new ManagerController(emp);
-//            }
         }
             catch (WrongUsername | WrongPassword e1) {
-            loginPage.getErrorLabel().setVisible(true);
-            loginPage.getErrorLabel().setText(e1.getMessage());
+            try{
+                guest=guestDAO.authLogin(username,password);
+                System.out.println("Login Successful");
+                Scene guestScene = new Scene(new GuestController(guest).getGuestPage());
+                Stage oldStage = (Stage) loginPage.getScene().getWindow();
+                oldStage.close();
+                Stage primaryStage = new Stage();
+                primaryStage.setScene(guestScene);
+                primaryStage.setTitle("3A Hotel");
+                primaryStage.setX(VISUAL_BOUNDS.getMinX());
+                primaryStage.setY(VISUAL_BOUNDS.getMinY());
+                primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
+                primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
+                primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
+                primaryStage.show();
+            } catch (WrongUsername | WrongPassword e) {
+                loginPage.getErrorLabel().setVisible(true);
+                loginPage.getErrorLabel().setText(e.getMessage());
 
-        }
+            }
+
+            }
     }
 
 

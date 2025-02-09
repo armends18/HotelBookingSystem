@@ -15,10 +15,7 @@ public class Booking implements Serializable {
     private String invoiceId;
     private double refundPrice;
     private int numberOfNights=0;
-    private int roomNumber;
-    private String guestName;
-    private LocalDate startingDate;
-    private LocalDate endDate;
+
 
     public Booking(Room room, Guest guest) {
         this.room = room;
@@ -26,10 +23,7 @@ public class Booking implements Serializable {
         this.room.setBookedDates(guest.getDate1(),guest.getDate2());
         this.invoiceId=LocalDate.now().toString();
         this.numberOfNights= (int) ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2());
-        this.startingDate=guest.getDate1();
-        this.endDate=guest.getDate2();
-        this.guestName=guest.getName();
-        this.roomNumber= room.getRoomNumber();
+
     }
 
     public Room getRoom() {
@@ -51,31 +45,31 @@ public class Booking implements Serializable {
         this.invoicePrice = invoicePrice;
     }
 
-    public void generateFirstInvoice(){
+    public String generateFirstInvoice(){
         invoicePrice = room.getPrice()* ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2())*1.2;
-        System.out.println("Invoice_"+invoiceId+":");
-        System.out.println("You have booked Room "+room.getRoomNumber()+" of type: "+room.getType() +" for "+ (ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2()))+" night/s.");
-        System.out.println("The Dates of your stay are: "+guest.getDate1()+" and "+guest.getDate2());
-        System.out.println("You have to check out at: "+guest.getDate2()+" at 11.00 am");
-        System.out.println("Invoice Price: "+invoicePrice);
-        System.out.println("Refund Policy:\nFull refund: Cancel at least 3 days before booking date!\n30% refund: at least 1 day before the booking\n");
+        return ("Invoice_"+invoiceId+":")
+        +("\nYou have booked Room "+room.getRoomNumber()+" of type: "+room.getType() +" for "+ (ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2()))+" night/s.")
+        +("\nThe Dates of your stay are: "+guest.getDate1()+" and "+guest.getDate2())
+        +("\nYou have to check out at: "+guest.getDate2()+" at 11.00 am")
+        +("\nInvoice Price: "+invoicePrice)
+        +("\nRefund Policy:\nFull refund: Cancel at least 3 days before booking date!\n30% refund: at least 1 day before the booking\n");
 
     }
-    public void generateFinalInvoice(){
+    public String generateFinalInvoice(){
         invoicePrice = room.getPrice()* ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2())*1.2;
-        System.out.println("Invoice_"+invoiceId+":");
-        System.out.println("You have stayed in Room "+room.getRoomNumber()+" for "+ (ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2()))+" night/s.");
-        System.out.println("The Dates of your stay were: "+guest.getDate1()+" and "+guest.getDate2());
-        System.out.println("Invoice Price: "+invoicePrice);
+        return ("Invoice_"+invoiceId+":")
+        +("\nYou have stayed in Room "+room.getRoomNumber()+" for "+ (ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2()))+" night/s.")
+        +("\nThe Dates of your stay were: "+guest.getDate1()+" and "+guest.getDate2())
+        +("\nInvoice Price: "+invoicePrice);
 
 
     }
-    public void generateCancellationInvoice(){
-        System.out.println("Invoice_"+invoiceId+":");
-        System.out.println("You have cancelled your booking of room "+room.getRoomNumber()+" of type: "+room.getType() +" for "+ ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2())+" nights.");
-        System.out.println("The Dates of your stay were: "+guest.getDate1()+" up to "+guest.getDate2());
-        System.out.println("Invoice Price: "+invoicePrice);
-        System.out.println("Refund Amount: "+refundPrice);
+    public String  generateCancellationInvoice(){
+        return("Invoice_"+invoiceId+":")
+        +("\nYou have cancelled your booking of room "+room.getRoomNumber()+" of type: "+room.getType() +" for "+ ChronoUnit.DAYS.between(guest.getDate1(),guest.getDate2())+" nights.")
+        +("\nThe Dates of your stay were: "+guest.getDate1()+" up to "+guest.getDate2())
+        +("\nInvoice Price: "+invoicePrice)
+        +("\nRefund Amount: "+refundPrice);
 
     }
 
@@ -87,24 +81,23 @@ public class Booking implements Serializable {
 
                 this.refundPrice= this.invoicePrice;
                 this.invoicePrice=0;
-                generateCancellationInvoice();
+
                 room.removeBookedDates(guest.getDate1(),guest.getDate2());
 
             } else if (ChronoUnit.DAYS.between(today,guest.getDate1())>=1) {
                 this.refundPrice= this.invoicePrice*0.3;
                 this.invoicePrice=this.invoicePrice-this.refundPrice;
-                generateCancellationInvoice();
+
                 room.removeBookedDates(guest.getDate1(),guest.getDate2());
             }
             else {
                 this.refundPrice= 0;
-                generateCancellationInvoice();
+
             }
 
         }
     }
     public void endBooking() {
-        generateFinalInvoice();
         room.removeBookedDates(guest.getDate1(),guest.getDate2());
     }
     public int getNumberOfNights() {
@@ -113,15 +106,16 @@ public class Booking implements Serializable {
         this.numberOfNights = numberOfNights;
     }
     public int getRoomNumber() {
-        return roomNumber;
+        return room.getRoomNumber();
     }
     public String getGuestName() {
-        return guestName;
+        return guest.getName();
     }
     public LocalDate getStartingDate() {
-        return startingDate;
+        return guest.getDate1();
     }
     public LocalDate getEndDate() {
-        return endDate;
+        return guest.getDate2();
     }
+
 }

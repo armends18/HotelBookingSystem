@@ -103,6 +103,7 @@ public class EmployeeDao {
         }
     }
     public Employee authLogin(String username, String password) throws WrongPassword, WrongUsername {
+
         for(Employee e : employees) {
             if(e.getUsername().equals(username)) {
                 if(e.getPassword().equals(password)) {

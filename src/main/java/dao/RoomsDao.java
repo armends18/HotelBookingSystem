@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class RoomsDao {
@@ -54,6 +56,17 @@ public class RoomsDao {
             return true;
         } catch(IOException ex) {
             return false;
+        }
+    }
+    public void setBookedDates(int i, LocalDate date1,LocalDate date2 ){
+        try(ObjectOutputStream outputStream=new ObjectOutputStream(new FileOutputStream(DATA_FILE))){
+           Room r=rooms.get(i);
+           r.setBookedDates(date1,date2);
+           delete(rooms.get(i));
+           create(r);
+           updateAll();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
