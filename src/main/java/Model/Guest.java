@@ -11,6 +11,10 @@ public class Guest implements Serializable {
     private String name;
     private BigInteger phoneNumber;
     private String email;
+    private String username;
+    private String password;
+    private LocalDate date1;
+    private LocalDate date2;
 
     public void setUsername(String username) {
         this.username = username;
@@ -28,16 +32,15 @@ public class Guest implements Serializable {
         return password;
     }
 
-    private String username;
-    private String password;
-    private LocalDate date1;
-    private LocalDate date2;
-    public Guest(String name,BigInteger phoneNumber,String email) {
+
+    public Guest(String name,String phoneNumber,String email,String username,String password) {
         this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = new BigInteger(phoneNumber) ;
         this.email = email;
         this.date1 = null;
         this.date2 = null;
+        this.username=username;
+        this.password=password;
 
     }
     public Guest(String name, String phoneNumber,String email, LocalDate date1, LocalDate date2) {

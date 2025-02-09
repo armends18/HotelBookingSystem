@@ -16,6 +16,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import static com.hotel.Main2.VISUAL_BOUNDS;
+
 public class RegisterController {
     private EmployeeDao employeeDAO;
     private GuestDao guestDAO;
@@ -28,6 +30,7 @@ public class RegisterController {
     public RegisterController() {
         registerPage = new RegisterPage();
         employeeDAO = new EmployeeDao();
+        guestDAO=new GuestDao();
         registerPage.getPasswordField().setOnKeyPressed(e->onRegisterEnter(e));
         registerPage.getUsernameField().setOnKeyPressed(e->onRegisterEnter(e));
         registerPage.getUnmaskedPasswordField().setOnKeyPressed(e->onRegisterEnter(e));
@@ -63,30 +66,29 @@ public class RegisterController {
     }
 
     private void register() {
+        String name=registerPage.getNameField().getText();
+        String email=registerPage.getEmailField().getText();
+        String phone=registerPage.getPhoneField().getText();
         String username = registerPage.getUsernameField().getText();
         String password = registerPage.getPasswordField().getText();
-        Guest gue;
+        Guest gue=new Guest(name,phone,email,username,password);
         try {
-            if(!guestDAO.guestExists(username)){
-
-            }
+            boolean ok =guestDAO.guestExists(username);
             System.out.println("Registery Successful");
-            //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+            Scene scene = new Scene(new NewGuestController(gue).getGuestPage());
             Stage oldStage = (Stage) registerPage.getScene().getWindow();
             oldStage.close();
-            // Stage primaryStage = new Stage();
-            // primaryStage.setScene(homeScene);
-//            primaryStage.setTitle("3A Hotel");
-//            primaryStage.setX(VISUAL_BOUNDS.getMinX());
-//            primaryStage.setY(VISUAL_BOUNDS.getMinY());
-//            primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
-//            primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
-//            primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
-//            primaryStage.show();
+            Stage primaryStage = new Stage();
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("3A Hotel");
+            primaryStage.setX(VISUAL_BOUNDS.getMinX());
+            primaryStage.setY(VISUAL_BOUNDS.getMinY());
+            primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
+            primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
+            primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
+            primaryStage.show();
 
-//           if(emp instanceof Manager) {
-//                new ManagerController(emp);
-//            }
+
         }
          catch (AlreadyExists e) {
             throw new RuntimeException(e);

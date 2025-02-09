@@ -12,17 +12,17 @@ import javafx.stage.Stage;
 
 public class HomePageController {
     private Employee employee;
-    private GuestPage homePage;
+    private HomePage homePage;
     private BookingDao bookingDao=new BookingDao();
 
 
     HomePageController(Employee employee) {
         this.employee = employee;
-        this.homePage = new GuestPage(employee);
+        this.homePage = new HomePage(employee);
         setEditListeners();
         this.homePage.getTableView().setItems(bookingDao.getAll());
         this.homePage.getDeleteBookingBt().setOnAction(e->onBookingDelete(e));
-
+        homePage.getLogoutItem().setOnAction(e -> logout());
 
 
     }
@@ -64,9 +64,9 @@ public class HomePageController {
     }
 
     private void onBookingDelete(ActionEvent event) {
-        ObservableList<Booking> selectedCountries = this.homePage.getTableView().getSelectionModel().getSelectedItems();
+        ObservableList<Booking> selectedBookings = this.homePage.getTableView().getSelectionModel().getSelectedItems();
         Alert alert;
-        if(bookingDao.deleteAll(selectedCountries)) {
+        if(bookingDao.deleteAll(selectedBookings)) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Deleted successfully");
             System.out.println("Deleted successfully");
@@ -99,7 +99,7 @@ public class HomePageController {
 //            System.out.println("country creation failed");
 //        }
 
-    public GuestPage getHomePage() {
+    public HomePage getHomePage() {
         return homePage;
     }
 }

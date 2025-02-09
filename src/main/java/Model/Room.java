@@ -26,6 +26,18 @@ public class Room implements Serializable {
     public RoomType getType() {
         return type;
     }
+    public String getTypeAsString(){
+        if(getType()==RoomType.SINGLE){
+            return "SINGLE";
+        }
+        else if(getType()==RoomType.DOUBLE){
+            return "SINGLE";
+        }
+        else{
+            return "SINGLE";
+        }
+
+    }
 
     public double getPrice() {
         return price;

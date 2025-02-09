@@ -24,7 +24,7 @@ public class HomePage extends BorderPane {
 
     private MenuItem profileItem;
     private MenuItem logoutItem;
-
+    private VBox sidebarHome = new VBox();
     private final TableView<Booking> tableView=new TableView<>();
     private final TableColumn<Booking,Integer> roomNumber;
     private final TableColumn<Booking,String> guestsName;
@@ -53,6 +53,7 @@ public class HomePage extends BorderPane {
         logoutMenu.getItems().add(logoutItem);
         menuBar.getMenus().addAll(logoutMenu);
         this.setTop(menuBar);
+        sidebarHome.getChildren().add(imageView);
         this.setStyle("-fx-background-color: linear-gradient(to right,#58a7df,#b6e3ff);");
         Label titleLabel = new Label("Hello, " + employee.getName() + "!");
         titleLabel.setFont(new Font("Lucida Handwriting", 28));
@@ -91,9 +92,12 @@ public class HomePage extends BorderPane {
         tableView.getColumns().addAll(roomNumber,guestsName,numberOfNights,startingDate,endDate);
 
         deleteBookingBt.setStyle("-fx-background-color: #ffffff;-fx-text-fill: #ff0000;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: #ff0000;-fx-border-width: 5");
-        HBox buttonContainer = new HBox(10, deleteBookingBt, endBookingBt, generateFinalInvoice, addBookingBt, showRoomsBt);
+        VBox buttonContainer = new VBox(10, endBookingBt, generateFinalInvoice, addBookingBt, showRoomsBt);
+
         buttonContainer.setAlignment(Pos.CENTER);
         buttonContainer.setPadding(new Insets(10, 0, 0, 0));
+        sidebarHome.getChildren().add(buttonContainer);
+        this.setRight(sidebarHome);
         ScrollPane scrollPane = new ScrollPane(tableView);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
@@ -101,7 +105,7 @@ public class HomePage extends BorderPane {
 
         VBox tableContainer = new VBox();
                 tableContainer.setSpacing(10);
-        tableContainer.getChildren().addAll(titleLabel,scrollPane,buttonContainer);
+        tableContainer.getChildren().addAll(titleLabel,scrollPane,deleteBookingBt);
         tableContainer.setAlignment(Pos.CENTER);
         tableContainer.setPadding(new Insets(20,20,20,20));
         this.setCenter(tableContainer);
@@ -130,7 +134,9 @@ public class HomePage extends BorderPane {
         return logoutItem;
     }
 
-
+    public VBox getSidebarHome() {
+        return sidebarHome;
+    }
     public TableColumn<Booking,Integer> getRoomNumber() {
         return roomNumber;
     }
@@ -169,4 +175,5 @@ public class HomePage extends BorderPane {
     public Button getShowRoomsBt() {
         return showRoomsBt;
     }
+
 }

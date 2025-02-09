@@ -65,7 +65,7 @@ public class GuestDao {
     public boolean deleteGuest(Guest guest) {
         try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             for (Guest g:guests) {
-                if(!g.equals(guests)) {
+                if(!g.equals(guest)) {
                     outputStream.writeObject(g);
                 }
             }
@@ -119,7 +119,10 @@ public class GuestDao {
     }
     public boolean guestExists(String username) throws AlreadyExists {
         for(Guest g : guests) {
-            if(g.getUsername().equals(username)) {
+            if (username==null||username.isEmpty()){
+                throw new AlreadyExists("Invalid Username");
+            }
+            else if(g.getUsername() != null && g.getUsername().equals(username)) {
                 throw new AlreadyExists("Username is wrong");
             }
 
