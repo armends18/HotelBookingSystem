@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
@@ -38,18 +39,18 @@ public class NewGuestPage extends BorderPane {
         menuBar.setStyle("-fx-background-color:#fff598; -fx-text-fill: #ffffff;");
         Menu logoutMenu = createStyledMenu("Log Out");
         logoutItem = createStyledMenuItem("Log Out");
-//        ImageView imageView = new ImageView("file:src/main/resources/images/appIcon.jpg");
-//        imageView.setFitWidth(250);
-//        imageView.setFitHeight(250);
-//        imageView.setPreserveRatio(true);
-//        logoutMenu.getItems().add(logoutItem);
+        ImageView imageView = new ImageView("file:src/main/resources/images/appIcon.jpg");
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(250);
+        imageView.setPreserveRatio(true);
+        logoutMenu.getItems().add(logoutItem);
         menuBar.getMenus().addAll(logoutMenu);
         this.setTop(menuBar);
         this.setStyle("-fx-background-color: linear-gradient(to right,#58a7df,#b6e3ff);");
         Label titleLabel = new Label("Hello, " + guest.getName() + "!");
         titleLabel.setFont(new Font("Lucida Handwriting", 28));
         titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #dec000;");
-        tableView.setEditable(false);
+        tableView.setEditable(true);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         roomNumberC =new TableColumn<>("Room Number");
@@ -74,9 +75,9 @@ public class NewGuestPage extends BorderPane {
 
 
         ScrollPane scrollPane = new ScrollPane(tableView);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setPrefSize(250,300);
+
+        scrollPane.setMaxHeight(400);
+        scrollPane.setPrefSize(400,400);
 
         HBox tableContainer = new HBox();
         tableContainer.setSpacing(10);

@@ -31,10 +31,22 @@ public class Room implements Serializable {
             return "SINGLE";
         }
         else if(getType()==RoomType.DOUBLE){
-            return "SINGLE";
+            return "DOUBLE";
         }
         else{
-            return "SINGLE";
+            return "TWIN";
+        }
+
+    }
+    public void setTypeAsString(String s){
+        if (s=="SINGLE"){
+            this.type=RoomType.SINGLE;
+        }
+        else if(s=="DOUBLE"){
+            this.type=RoomType.DOUBLE;
+        }
+        else if(s=="TWIN"){
+            this.type=RoomType.TWIN;
         }
 
     }

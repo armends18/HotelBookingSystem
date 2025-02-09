@@ -7,6 +7,7 @@ import Model.Employee;
 import View.*;
 import dao.BookingDao;
 import dao.GuestDao;
+import dao.RoomsDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
@@ -16,15 +17,28 @@ public class NewGuestController {
    
     private NewGuestPage newGuestPage;
     private GuestDao guestDao=new GuestDao();
+    private RoomsDao roomsDao=new RoomsDao();
 
 
     NewGuestController(Guest guest) {
         
         this.newGuestPage = new NewGuestPage(guest);
-  
-        this.newGuestPage.getTableView().setItems(guestDao.getAll());
+        setEditListeners();
+        this.newGuestPage.getTableView().setItems(roomsDao.getAll());
         newGuestPage.getLogoutItem().setOnAction(e -> logout());
 
+
+    }
+    private void setEditListeners() {
+        this.newGuestPage.getRoomNumberC().setOnEditCommit(e -> {
+            roomsDao.getAll().get(e.getTablePosition().getRow()).setRoomNumber(e.getNewValue());
+        });
+        this.newGuestPage.getRoomType().setOnEditCommit(e -> {
+            roomsDao.getAll().get(e.getTablePosition().getRow()).setTypeAsString(e.getNewValue());
+        });
+        this.newGuestPage.getRoomPrice().setOnEditCommit(e -> {
+            roomsDao.getAll().get(e.getTablePosition().getRow()).setPrice(e.getNewValue());
+        });
 
     }
 
